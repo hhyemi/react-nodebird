@@ -1,27 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { Menu, Input, Row, Col } from 'antd';
+import styled from 'styled-components';
+
+import UserProfile from '../components/UserProfile';
+import LoginForm from '../components/LoginForm';
+
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`;
 
 const AppLayout = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div>
-      <Link href="/">
-        <a>노드버드</a>
-      </Link>
-      <Link href="/profile">
-        <a>프로필</a>
-      </Link>
-      <Link href="/signup">
-        <a>회원가입</a>
-      </Link>
-      <div>공통메뉴</div>
-      {children}
+      <Menu mode="horizontal">
+        <Menu.Item key="home">
+          <Link href="/">
+            <a>노드버드</a>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="profile">
+          <Link href="/profile">
+            <a>프로필</a>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="mail">
+          <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
+        </Menu.Item>
+      </Menu>
+      <Row gutter={8}>
+        <Col xs={24} md={6}>
+          {isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : <LoginForm setIsLoggedIn={setIsLoggedIn} />}
+        </Col>
+        <Col xs={24} md={12}>
+          {children}
+        </Col>
+        <Col xs={24} md={6}>
+          <a
+            href="https://hhyemi.github.io/"
+            target="_blank" // 보안위험이 있음
+            rel="noreferrer noopener" // 그래서 이것까지 같이 적어야 보안위험이 사라짐
+          >
+            HM_BLOG
+          </a>
+        </Col>
+      </Row>
     </div>
   );
 };
 
+// 검사
 AppLayout.propTypes = {
-  // 검사
   children: PropTypes.node.isRequired // 리액트의 노드
 };
 
