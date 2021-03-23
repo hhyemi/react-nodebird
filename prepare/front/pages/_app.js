@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import 'antd/dist/antd.css';
 
+import wrapper from '../store/configureStore';
+
 const App = ({ Component }) => {
+  // next.js 쓰면 Provider store={store} 안써도됨
   return (
     <>
       <Head>
@@ -17,7 +20,7 @@ const App = ({ Component }) => {
 };
 
 App.propTypes = {
-  children: PropTypes.elementType.isRequired
+  Component: PropTypes.elementType.isRequired
 };
 
-export default App;
+export default wrapper.withRedux(App);
