@@ -3,10 +3,10 @@ import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';
-import { loginAction } from '../reducers/user';
+import { loginRequestAction } from '../reducers/user';
 
 // 인라인 스타일링 사용 시(스타일에 객체를 넣을때) {} === {} false이기때문에 바뀐걸로 인식해서 리렌더링됨(바뀐부분만) 그래서 styled-components 사용하기
 // styled-components 대신 useMemo 사용으로 대체 가능
@@ -20,21 +20,22 @@ const FormWrapper = styled(Form)`
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const [id, onChangeId] = useInput('');
+  const { logInLodding } = useSelector(state => state.user);
+  const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const onSubmitForm = useCallback(() => {
     // e.preventDefault()  => ant디자인은 적용되어있음
-    console.log(id, password);
-    dispatch(loginAction({ id, password }));
-  }, [id, password]);
+    console.log(email, password);
+    dispatch(loginRequestAction({ email, password }));
+  }, [email, password]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-email">이메일</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} required />
+        <Input name="user-email" type="email" value={email} onChange={onChangeEmail} required />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
@@ -42,7 +43,7 @@ const LoginForm = () => {
         <Input name="user-password" value={password} onChange={onChangePassword} required />
       </div>
       <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={false}>
+        <Button type="primary" htmlType="submit" loading={logInLodding}>
           로그인
         </Button>
         <Link href="/signup">
