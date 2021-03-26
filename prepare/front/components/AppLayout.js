@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import UserProfile from '../components/UserProfile';
-import LoginForm from '../components/LoginForm';
+import UserProfile from './UserProfile';
+import LoginForm from './LoginForm';
 
 const Global = createGlobalStyle`
   .ant-row {
@@ -28,7 +28,7 @@ const SearchInput = styled(Input.Search)`
 `;
 
 const AppLayout = ({ children }) => {
-  const { me } = useSelector(state => state.user);
+  const { me } = useSelector((state) => state.user);
 
   return (
     <div>

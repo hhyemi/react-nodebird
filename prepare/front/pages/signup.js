@@ -6,14 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const ErrorMessage = styled.div`
   color: red;
 `;
 
 const Signup = () => {
-  const dispathch = useDispatch();
-  const { singUpLoading } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const { singUpLoading } = useSelector((state) => state.user);
 
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
@@ -22,7 +23,7 @@ const Signup = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const onChangePasswordCheck = useCallback(
-    e => {
+    (e) => {
       setPasswordCheck(e.target.value);
       setPasswordError(e.target.value !== password);
     },
@@ -31,7 +32,7 @@ const Signup = () => {
 
   const [term, setTerm] = useState('');
   const [termError, setTermError] = useState('');
-  const onChangeTerm = useCallback(e => {
+  const onChangeTerm = useCallback((e) => {
     setTermError(false);
     setTerm(e.target.checked);
   }, []);
@@ -50,8 +51,8 @@ const Signup = () => {
       data: {
         email,
         password,
-        nickname
-      }
+        nickname,
+      },
     });
   }, [email, password, passwordCheck, term]);
   return (

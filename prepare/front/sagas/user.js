@@ -9,7 +9,7 @@ import {
   LOG_OUT_SUCCESS,
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
-  SIGN_UP_SUCCESS,
+  SIGN_UP_SUCCESS
 } from '../reducers/user';
 
 function logInAPI(data) {
@@ -21,13 +21,13 @@ function* logIn(action) {
     yield delay(100);
     // const result = yield call(logInAPI, action.data); // call은 펼쳐줘야함 logInAPI(action.data) XXXX
     yield put({
-      type: LOG_IN_SUCCESS,
+      type: LOG_IN_SUCCESS
       // data: action.data
     });
   } catch (err) {
     yield put({
       type: LOG_IN_FAILURE,
-      error: err.response.data,
+      error: err.response.data
     });
   }
 }
@@ -41,12 +41,12 @@ function* logOut() {
     yield delay(100);
     // const result = yield call(ogOutAPI);
     yield put({
-      type: LOG_OUT_SUCCESS,
+      type: LOG_OUT_SUCCESS
     });
   } catch (err) {
     yield put({
       type: LOG_OUT_FAILURE,
-      error: err.response.data,
+      error: err.response.data
     });
   }
 }
@@ -60,12 +60,12 @@ function* signUp() {
     yield delay(100);
     // const result = yield call(ogOutAPI);
     yield put({
-      type: SIGN_UP_SUCCESS,
+      type: SIGN_UP_SUCCESS
     });
   } catch (err) {
     yield put({
       type: SIGN_UP_FAILURE,
-      error: err.response.data,
+      error: err.response.data
     });
   }
 }

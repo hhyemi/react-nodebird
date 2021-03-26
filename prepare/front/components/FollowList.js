@@ -16,7 +16,7 @@ const FollowList = ({ header, data }) => (
     }
     bordered
     dataSource={data}
-    renderItem={item => (
+    renderItem={(item) => (
       <List.Item style={{ marginTop: '20px' }}>
         <Card actions={[<StopOutlined key="stop" />]}>
           <Card.Meta description={item.nickname} />
