@@ -1,3 +1,6 @@
-# frontend #
+# front #
 /prepare/front/node_modules
 /prepare/front/.next
+
+# back #
+/prepare/back/node_modules
