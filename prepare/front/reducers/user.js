@@ -1,6 +1,12 @@
 import produce from 'immer';
 
 export const initialState = {
+  followLoading: false, // 팔로우 시도중
+  followDone: false,
+  followError: null,
+  unfollowLoading: false, // 언팔로우 시도중
+  unfollowDone: false,
+  unfollowError: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
