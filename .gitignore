@@ -4,3 +4,4 @@
 
 # back #
 /prepare/back/node_modules
+/prepare/back/.env

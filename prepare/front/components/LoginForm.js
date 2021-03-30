@@ -1,8 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';
@@ -20,9 +19,15 @@ const FormWrapper = styled(Form)`
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { logInLodding } = useSelector((state) => state.user);
+  const { logInLoading, logInError } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
 
   const onSubmitForm = useCallback(() => {
     // e.preventDefault()  => ant디자인은 적용되어있음
@@ -40,10 +45,10 @@ const LoginForm = () => {
       <div>
         <label htmlFor="user-password">비밀번호</label>
         <br />
-        <Input name="user-password" value={password} onChange={onChangePassword} required />
+        <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
       </div>
       <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={logInLodding}>
+        <Button type="primary" htmlType="submit" loading={logInLoading}>
           로그인
         </Button>
         <Link href="/signup">

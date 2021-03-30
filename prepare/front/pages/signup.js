@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
+import Router from 'next/router';
 import { Button, Form, Input, Checkbox } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +15,26 @@ const ErrorMessage = styled.div`
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { singUpLoading } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me && me.id]);
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.replace('/');
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
@@ -51,8 +71,8 @@ const Signup = () => {
       data: {
         email,
         password,
-        nickname,
-      },
+        nickname
+      }
     });
   }, [email, password, passwordCheck, term]);
   return (
@@ -74,7 +94,7 @@ const Signup = () => {
         <div>
           <label htmlFor="user-password">비밀번호</label>
           <br />
-          <Input name="user-password" value={password} required onChange={onChangePassword} />
+          <Input name="user-password" type="password" value={password} required onChange={onChangePassword} />
         </div>
         <div>
           <label htmlFor="user-password-check">비밀번호체크</label>
@@ -95,7 +115,7 @@ const Signup = () => {
           {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
         </div>
         <div style={{ marginTop: 10 }}>
-          <Button type="primary" htmlType="submit" loading={singUpLoading}>
+          <Button type="primary" htmlType="submit" loading={signUpLoading}>
             가입하기
           </Button>
         </div>
