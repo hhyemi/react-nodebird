@@ -3,9 +3,48 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 const { User, Post } = require('../models');
-const { isLoggedIn, isNotLoggedIn } = require('./middleware');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
+
+// 로그인 유지
+router.get('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      // 로그인이 되어있으면
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          // 비번제외해서 가져오겠다
+          exclude: ['password']
+        },
+        // modelse의 associate에 있던애들, as썼으면 as써야함
+        include: [
+          {
+            model: Post,
+            attributes: ['id'] // 데이터 개수만 가져오기 위한 (내용은 필요없음 )
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id']
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id']
+          }
+        ]
+      });
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 // POST /user/login
 // done이 전달되는 곳 -> (err,user,info)
@@ -38,15 +77,18 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         // modelse의 associate에 있던애들, as썼으면 as써야함
         include: [
           {
-            model: Post
+            model: Post,
+            attributes: ['id']
           },
           {
             model: User,
-            as: 'Followings'
+            as: 'Followings',
+            attributes: ['id']
           },
           {
             model: User,
-            as: 'Followers'
+            as: 'Followers',
+            attributes: ['id']
           }
         ]
       });
@@ -83,10 +125,25 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/logout', isNotLoggedIn, async (req, res, next) => {
+router.post('/logout', isLoggedIn, async (req, res, next) => {
   req.logout();
   req.session.destroy();
   res.send('ok');
+});
+
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+  try {
+    await User.update(
+      {
+        nickname: req.body.nickname
+      },
+      { where: { id: req.user.id } }
+    );
+    res.status(200).json({ nickname: req.body.nickname });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 module.exports = router;

@@ -4,9 +4,11 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 
-const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
+const userRouter = require('./routes/user');
 const db = require('./models');
 const passportConfig = require('./passport');
 
@@ -22,12 +24,13 @@ db.sequelize
 
 passportConfig();
 
+app.use(morgan('dev')); // 프론트 요청을 터미널에 보여줌
 // cors문제 미들웨어로 처리하기 (브라우저에서 다른 포트로 요청했을때 문제를 해결)
 // Access-Control-Allow-Origin 이 Headers에 추가됨
 app.use(
   cors({
-    orgin: '*',
-    credentials: true
+    origin: 'http://localhost:3000', // credentials썼을때는 * 하지말기 (origin : true 가능)
+    credentials: true // cors문제 쿠키까지 전달하기 위해서
   })
 );
 // data를 해석하여 req.body로 받기 위한 설정, 위치는 위에 있어야 함 (위치중요!)
@@ -43,7 +46,8 @@ app.get('/', (req, res) => {
   res.send('hello');
 });
 
-app.use('/post', postRouter);
+app.use('/post', postRouter); // 한개의 post만
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 // 에러 처리 미들웨어 (기본적으로 내장되어 있는데 바꾸고싶으면 따로 만들어줌)
