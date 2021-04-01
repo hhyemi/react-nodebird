@@ -1,5 +1,5 @@
 const express = require('express');
-
+const { Op } = require('sequelize');
 const { Post, User, Image, Comment } = require('../models');
 
 const router = express.Router();
@@ -7,8 +7,15 @@ const router = express.Router();
 // GET /posts
 router.get('/', async (req, res, next) => {
   try {
+    const where = {};
+    // 초기 로딩이 아닐 때
+    if (parseInt(req.query.lastId, 10)) {
+      // 0 == false
+      // Op.lt : operator 연산자
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }; // lastId보다 작은
+    }
     const posts = await Post.findAll({
-      //where: { id: lastId },
+      where,
       limit: 10,
       // offset: 10, // 불러오는 중에 글을 쓰거나 지웠을때 글이 제대로 안불러짐(쓰지x)
       order: [
@@ -37,6 +44,19 @@ router.get('/', async (req, res, next) => {
           model: User, // 좋아요 누른사람
           as: 'Likers', // 구분
           attributes: ['id']
+        },
+        {
+          model: Post,
+          as: 'Retweet',
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname']
+            },
+            {
+              model: Image
+            }
+          ]
         }
       ]
     });

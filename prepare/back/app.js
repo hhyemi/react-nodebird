@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -33,6 +34,9 @@ app.use(
     credentials: true // cors문제 쿠키까지 전달하기 위해서
   })
 );
+// '/' : 'localhost:3000
+// express static미들웨어 __dirname 현재폴더 (back) 와 upload를 합쳐줌 / path.join: 운영체제에 맞게 알아서 조인
+app.use('/', express.static(path.join(__dirname, 'uploads')));
 // data를 해석하여 req.body로 받기 위한 설정, 위치는 위에 있어야 함 (위치중요!)
 app.use(express.json()); // front에서 보낸 json을 req.body에 넣어줌
 app.use(express.urlencoded({ extended: true })); // form submit data를 req.body에 넣어줌

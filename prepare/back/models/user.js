@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     db.User.hasMany(db.Post);
     db.User.hasMany(db.Comment);
     db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' }); // through: 중간 테이블이름 설정, as: 위에 Post와 구별 (대문자로 시작)
-    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollwingId' }); // foreignKey : Key 컬럼명 설정
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
     db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });
   };
   return User;

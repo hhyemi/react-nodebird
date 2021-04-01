@@ -21,7 +21,7 @@ const PostImages = ({ images }) => {
         <img
           role="presentation"
           style={{ maxHeight: '600px', maxWidth: '400px' }}
-          src={images[0].src}
+          src={`http://localhost:3065/${images[0].src}`}
           alt={images[0].src}
           onClick={onZoom}
         />
@@ -36,14 +36,14 @@ const PostImages = ({ images }) => {
         <img
           role="presentation"
           style={{ width: '50%', display: 'inline-block' }}
-          src={images[0].src}
+          src={`http://localhost:3065/${images[0].src}`}
           alt={images[0].src}
           onClick={onZoom}
         />
         <img
           role="presentation"
           style={{ width: '50%', display: 'inline-block' }}
-          src={images[1].src}
+          src={`http://localhost:3065/${images[1].src}`}
           alt={images[1].src}
           onClick={onZoom}
         />
@@ -53,7 +53,13 @@ const PostImages = ({ images }) => {
   return (
     <>
       <div>
-        <img role="presentation" src={images[0].src} alt={images[0].src} width="50%" onClick={onZoom} />
+        <img
+          role="presentation"
+          src={`http://localhost:3065/${images[0].src}`}
+          alt={images[0].src}
+          width="50%"
+          onClick={onZoom}
+        />
         <div
           role="presentation"
           style={{ display: 'inline-block', width: '50%', textAlign: 'center', verticalAlign: 'middle' }}
@@ -71,7 +77,7 @@ const PostImages = ({ images }) => {
 };
 
 PostImages.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.object)
+  images: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default PostImages;
