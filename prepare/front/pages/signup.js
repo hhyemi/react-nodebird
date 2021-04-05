@@ -4,10 +4,13 @@ import Router from 'next/router';
 import { Button, Form, Input, Checkbox } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { END } from 'redux-saga';
 
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
-import { SIGN_UP_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST, SIGN_UP_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -123,5 +126,22 @@ const Signup = () => {
     </AppLayout>
   );
 };
+
+// 로그인 여부에 따라 화면이 바뀜
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  console.log('getServerSideProps start');
+  const cookie = context.req ? context.req.headers.cookie : ''; // 쿠키까지 전달
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  context.store.dispatch({
+    type: LOAD_MY_INFO_REQUEST
+  });
+
+  context.store.dispatch(END); // 데이터를 success될때까지 기다려줌
+  console.log('getServerSideProps end');
+  await context.store.sagaTask.toPromise(); // 이건..사용방법 하라고
+});
 
 export default Signup;

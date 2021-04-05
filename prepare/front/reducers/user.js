@@ -1,7 +1,10 @@
 import produce from 'immer';
 
 export const initialState = {
-  loadMyInfoLoading: false, // 유저정보 가져오기 시도중
+  loadUserLoading: false, // 유저정보 가져오기 시도중
+  loadUserDone: false,
+  loadUserError: null,
+  loadMyInfoLoading: false, // 나의정보 가져오기 시도중
   loadMyInfoDone: false,
   loadMyInfoError: null,
   followLoading: false, // 팔로우 시도중
@@ -29,11 +32,16 @@ export const initialState = {
   removeFollowerDone: false,
   removeFollowerError: null,
   me: null,
-  signUpData: {},
-  loginData: {}
+  userInfo: null
+  // signUpData: {},
+  // loginData: {}
 };
 
 // actions 폴더로 분리해도됨
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
@@ -155,6 +163,20 @@ const reducer = (state = initialState, action) =>
       case LOAD_MY_INFO_FAILURE:
         draft.loadMyInfoLoading = false;
         draft.loadMyInfoError = action.error;
+        break;
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserError = null;
+        draft.loadUserDone = false;
+        break;
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.userInfo = action.data;
+        draft.loadUserDone = true;
+        break;
+      case LOAD_USER_FAILURE:
+        draft.loadaUserLoading = false;
+        draft.loadaUserError = action.error;
         break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
