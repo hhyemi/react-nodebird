@@ -68,6 +68,6 @@ app.use('/hashtag', hashtagRouter);
 // 에러 처리 미들웨어 (기본적으로 내장되어 있는데 바꾸고싶으면 따로 만들어줌)
 app.use((err, req, res, next) => {});
 
-app.listen(3065, () => {
+app.listen(80, () => {
   console.log('서버실행중');
 });
