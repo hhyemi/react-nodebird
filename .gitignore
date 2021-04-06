@@ -6,3 +6,6 @@
 /prepare/back/node_modules
 /prepare/back/.env
 /prepare/back/uploads
+
+# aws #
+/prepare/react-nodebird.pem

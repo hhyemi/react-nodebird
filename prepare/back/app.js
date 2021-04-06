@@ -31,11 +31,11 @@ app.use(morgan('dev')); // 프론트 요청을 터미널에 보여줌
 // Access-Control-Allow-Origin 이 Headers에 추가됨
 app.use(
   cors({
-    origin: 'http://localhost:3000', // credentials썼을때는 * 하지말기 (origin : true 가능)
+    origin: 'http://localhost:3060', // credentials썼을때는 * 하지말기 (origin : true 가능)
     credentials: true // cors문제 쿠키까지 전달하기 위해서
   })
 );
-// '/' : 'localhost:3000
+// '/' : 'localhost:3060
 // express static미들웨어 __dirname 현재폴더 (back) 와 upload를 합쳐줌 / path.join: 운영체제에 맞게 알아서 조인
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 // data를 해석하여 req.body로 받기 위한 설정, 위치는 위에 있어야 함 (위치중요!)

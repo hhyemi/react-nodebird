@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
-    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
+    "dev": "next -p 3060",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start -p 3060"
   },
   "author": "hyemi",
   "license": "ISC",
