@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === 'production') {
 // Access-Control-Allow-Origin 이 Headers에 추가됨
 app.use(
   cors({
-    origin: ['http://localhost:3060', 'nodebird.com'], // credentials썼을때는 * 하지말기 (origin : true 가능)
+    origin: ['http://localhost:3060', 'nodebird.com', 'http://54.180.131.28'], // credentials썼을때는 * 하지말기 (origin : true 가능)
     credentials: true // cors문제 쿠키까지 전달하기 위해서
   })
 );
