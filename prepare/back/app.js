@@ -6,6 +6,8 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -26,12 +28,19 @@ db.sequelize
 
 passportConfig();
 
-app.use(morgan('dev')); // 프론트 요청을 터미널에 보여줌
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet());
+} else {
+  app.use(morgan('dev')); // 프론트 요청을 터미널에 보여줌
+}
+
 // cors문제 미들웨어로 처리하기 (브라우저에서 다른 포트로 요청했을때 문제를 해결)
 // Access-Control-Allow-Origin 이 Headers에 추가됨
 app.use(
   cors({
-    origin: 'http://localhost:3060', // credentials썼을때는 * 하지말기 (origin : true 가능)
+    origin: ['http://localhost:3060', 'nodebird.com'], // credentials썼을때는 * 하지말기 (origin : true 가능)
     credentials: true // cors문제 쿠키까지 전달하기 위해서
   })
 );
