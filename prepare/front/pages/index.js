@@ -75,6 +75,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
   context.store.dispatch(END); // 데이터를 success될때까지 기다려줌
   console.log('getServerSideProps end');
   await context.store.sagaTask.toPromise(); // 이건..사용방법 하라고
+  // return { props: { data:123 }} // Home({ data })이렇게 전달가능
 });
 
 export default Home;
